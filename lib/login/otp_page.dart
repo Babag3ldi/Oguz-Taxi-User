@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 
 import '../../const/colors.dart';
 import '../const/enums.dart';
-import '../home/home_example.dart';
 import '../provider/app_provider.dart';
 import '../provider/login_api.dart';
 import '../provider/tarif_provider.dart';

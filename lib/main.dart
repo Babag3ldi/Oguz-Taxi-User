@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'home/home_example.dart';
 import 'home/karta.dart';
 import 'login/login_page.dart';
 import 'models/user_model.dart';
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/splash",
       routes: {
-        "/home": (ctx) => const MainExample(),
         "/picker-result": (ctx) => LocationAppExample(),
         "/splash": (ctx) => SplashScreen(),
         "/search": (ctx) => SearchPage(),

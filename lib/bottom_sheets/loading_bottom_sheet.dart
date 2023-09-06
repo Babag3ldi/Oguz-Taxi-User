@@ -25,9 +25,11 @@ class _SimpleLoadingBottomSheetState extends State<SimpleLoadingBottomSheet> {
   @override
   void initState() {
     Timer(const Duration(seconds: 5), () {
-      
+      print('object');
+       Provider.of<TarifProvider>(context, listen: false)
+                          .changeBottomSheet(5);
     });
-    Provider.of<TarifProvider>(context, listen: false).fetchData();
+    // Provider.of<TarifProvider>(context, listen: false).fetchData();
     super.initState();
   }  
 
