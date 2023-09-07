@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../home/karta.dart';
 import '../models/user_model.dart';
 import '../provider/app_provider.dart';
-import '../websocket/web_socket.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,19 +20,19 @@ class _SplashScreenState extends State<SplashScreen> {
   Box? loginBox;
   @override
   void initState() {
-    initAll();
+    initAll().then((value) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const MainMap()));
+    });
     super.initState();
-
-    Timer(const Duration(seconds: 3), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainMap())));
   }
 
-  initAll() async {
-    if (Hive.isBoxOpen("LoginBox") == false) {
+  Future initAll() async {
+    if (!Hive.isBoxOpen("LoginBox")) {
       await Hive.openBox("LoginBox");
-      loginBox = Hive.box('LoginBox');
-    } else {
-      loginBox = Hive.box('LoginBox');
     }
+
+    loginBox = Hive.box('LoginBox');
     try {
       UserModel user = loginBox!.get("user");
       debugPrint("user1:${user.toString()}");
@@ -44,7 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } catch (e) {
       if (mounted) {
-        await Provider.of<AppProvider>(context, listen: false).initLocalSettings(false, "");
+        await Provider.of<AppProvider>(context, listen: false)
+            .initLocalSettings(false, "");
       }
     }
   }

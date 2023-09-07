@@ -42,7 +42,9 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
   fetch() async {
     await _getCurrentPosition();
     MapController controller = MapController.customLayer(
-      initMapWithUserPosition:   true,  /// /const UserTrackingOption(enableTracking: false, unFollowUser: true),
+      initMapWithUserPosition: true,
+
+      /// /const UserTrackingOption(enableTracking: false, unFollowUser: true),
       areaLimit: BoundingBox(
           east: 58.481078, // Longitude for eastern boundary
           north: 37.999194, // Latitude for northern boundary
@@ -71,10 +73,13 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
     final hasPermission = await _handleLocationPermission();
 
     if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
       setState(() {
         _currentPosition = position;
-        latLng = ORSCoordinate(latitude: _currentPosition!.latitude, longitude: _currentPosition!.longitude);
+        latLng = ORSCoordinate(
+            latitude: _currentPosition!.latitude,
+            longitude: _currentPosition!.longitude);
       });
 
       //_getAddressFromLatLng(_currentPosition!);
@@ -88,8 +93,10 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
     final prov = Provider.of<TarifProvider>(context);
     return WillPopScope(
       onWillPop: () async {
-        print("yes${Provider.of<TarifProvider>(context, listen: false).bottomIndex}");
-        if (Provider.of<TarifProvider>(context, listen: false).bottomIndex != -1) {
+        print(
+            "yes${Provider.of<TarifProvider>(context, listen: false).bottomIndex}");
+        if (Provider.of<TarifProvider>(context, listen: false).bottomIndex !=
+            -1) {
           Provider.of<TarifProvider>(context, listen: false).backBottomSheet();
           return false;
         } else {
@@ -98,7 +105,8 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Duýduruş'),
-                content: const Text('Siz hakykatdanam programmadan çykjakmysyňyz?'),
+                content:
+                    const Text('Siz hakykatdanam programmadan çykjakmysyňyz?'),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
@@ -108,7 +116,8 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(false); // Cancel back navigation
+                      Navigator.of(context)
+                          .pop(false); // Cancel back navigation
                     },
                     child: const Text('Ýok'),
                   ),
@@ -124,24 +133,29 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
         key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         drawer: const Drawer1(),
-        floatingActionButton: Provider.of<MapProvider>(context).controller == null
-            ? null
-            : PointerInterceptor(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FloatingActionButton(
-                    onPressed: () async {
-                      Provider.of<MapProvider>(context, listen: false)
-                          .controller!
-                          .changeLocation(GeoPoint(latitude: latLng!.latitude, longitude: latLng!.longitude));
-                      for (int i = 1; i < 6; i++) {
-                        Provider.of<MapProvider>(context, listen: false).controller!.zoomIn();
-                      }
-                    },
-                    child: const Icon(Icons.my_location),
+        floatingActionButton:
+            Provider.of<MapProvider>(context).controller == null
+                ? null
+                : PointerInterceptor(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FloatingActionButton(
+                        onPressed: () async {
+                          Provider.of<MapProvider>(context, listen: false)
+                              .controller!
+                              .changeLocation(GeoPoint(
+                                  latitude: latLng!.latitude,
+                                  longitude: latLng!.longitude));
+                          for (int i = 1; i < 6; i++) {
+                            Provider.of<MapProvider>(context, listen: false)
+                                .controller!
+                                .zoomIn();
+                          }
+                        },
+                        child: const Icon(Icons.my_location),
+                      ),
+                    ),
                   ),
-                ),
-              ),
         body: Provider.of<MapProvider>(context).controller == null
             ? Container(
                 alignment: Alignment.bottomCenter,
@@ -173,6 +187,7 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                   //     ],
                   //   ),
                   // ),
+                  //
                   onMapIsReady: (isReady) {
                     if (isReady) {
                       // print("map is ready");
@@ -182,6 +197,7 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                     print(myLocation);
                   },
                   onGeoPointClicked: (geoPoint) async {},
+
                   // osmOption: const OSMOption(enableRotationByGesture: true),
                 ),
                 Positioned(
@@ -195,25 +211,33 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                 if (loading == false && prov.bottomIndex == -1)
                   Positioned(
                     bottom: 10,
-                    left: (MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width / 1.3)) / 2,
+                    left: (MediaQuery.of(context).size.width -
+                            (MediaQuery.of(context).size.width / 1.3)) /
+                        2,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF4C5BFF),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          fixedSize: Size(MediaQuery.of(context).size.width / 1.3, 45),
+                          fixedSize:
+                              Size(MediaQuery.of(context).size.width / 1.3, 45),
                         ),
                         onPressed: () {
-                          if (Provider.of<AppProvider>(context, listen: false).user == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          if (Provider.of<AppProvider>(context, listen: false)
+                                  .user ==
+                              null) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                               content: Text('Ilki bilen login bolmaly'),
                             ));
                             Timer(const Duration(seconds: 1), () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
                             });
                           } else {
-                            Provider.of<TarifProvider>(context, listen: false).nextBottomSheet();
+                            Provider.of<TarifProvider>(context, listen: false)
+                                .nextBottomSheet();
                           }
                         },
                         child: const Text(
@@ -226,7 +250,8 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
             prov.bottomIndex == -1
                 ? null
                 : SizedBox(
-                    height: Provider.of<TarifProvider>(context, listen: false).bottomShetHeight(),
+                    height: Provider.of<TarifProvider>(context, listen: false)
+                        .bottomShetHeight(),
                     child: IndexedStack(
                       index: prov.bottomIndex,
                       children: const [
@@ -239,9 +264,8 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                         AdatyMainBottomSheet(),
                         YolUgrunaMainBottomSheet(),
                         SimpleLoadingBottomSheet(),
-                        
-                        
-                        // SimpleOrderCompleteBottomSheet(),
+
+                        SimpleOrderCompleteBottomSheet(),
                       ],
                     ),
                   ),
@@ -256,7 +280,9 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location services are disabled. Please enable the services')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -264,22 +290,29 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
         // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location permissions are denied')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
       return false;
     }
     return true;
   }
 
   Future<void> mapIsInitialized() async {
-    await Provider.of<MapProvider>(context, listen: false).controller!.setZoom(zoomLevel: 12);
+    await Provider.of<MapProvider>(context, listen: false)
+        .controller!
+        .setZoom(zoomLevel: 12);
     if (mounted) {
-      Provider.of<MapProvider>(context, listen: false).controller!.changeLocation(GeoPoint(latitude: latLng!.latitude, longitude: latLng!.longitude));
+      Provider.of<MapProvider>(context, listen: false)
+          .controller!
+          .changeLocation(GeoPoint(
+              latitude: latLng!.latitude, longitude: latLng!.longitude));
     }
     for (int i = 1; i < 4; i++) {
       // ignore: use_build_context_synchronously

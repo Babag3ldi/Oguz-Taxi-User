@@ -46,9 +46,10 @@ class AppProvider with ChangeNotifier {
   }
 
   Future<void> initLocalSettings(bool islogin, String token) async {
-    token = token;
+    this.token = token;
 
-    await NetworkHandler.setRequestHeaders(isLoggedIn: islogin, token: token, locale: localeCode);
+    await NetworkHandler.setRequestHeaders(
+        isLoggedIn: islogin, token: token, locale: localeCode);
 
     // bool _isLight = await SharedPreferencesHelper.getThemeMode();
     // if (_isLight) {
@@ -103,9 +104,11 @@ class AppProvider with ChangeNotifier {
     }
     UserModel? user = loginBox!.get("user", defaultValue: null);
     if (user != null) {
-      await NetworkHandler.setRequestHeaders(isLoggedIn: true, token: user.token, locale: localeCode);
+      await NetworkHandler.setRequestHeaders(
+          isLoggedIn: true, token: user.token, locale: localeCode);
     } else {
-      await NetworkHandler.setRequestHeaders(isLoggedIn: false, locale: localeCode);
+      await NetworkHandler.setRequestHeaders(
+          isLoggedIn: false, locale: localeCode);
     }
     notifyListeners();
 

@@ -1,15 +1,10 @@
 // ignore_for_file: unused_field, prefer_typing_uninitialized_variables, avoid_print
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:provider/provider.dart';
 
 import '../const/colors.dart';
 import '../models/search_model.dart';
-import '../provider/network_class.dart';
-import '../provider/tarif_provider.dart';
 
 class SimpleLoadingBottomSheet extends StatefulWidget {
   const SimpleLoadingBottomSheet({super.key});
@@ -24,14 +19,13 @@ class _SimpleLoadingBottomSheetState extends State<SimpleLoadingBottomSheet> {
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 5), () {
-      print('object');
-       Provider.of<TarifProvider>(context, listen: false)
-                          .changeBottomSheet(5);
-    });
+    // Timer(const Duration(seconds: 5), () {
+    //   print('object');
+    //   Provider.of<TarifProvider>(context, listen: false).changeBottomSheet(5);
+    // });
     // Provider.of<TarifProvider>(context, listen: false).fetchData();
     super.initState();
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {

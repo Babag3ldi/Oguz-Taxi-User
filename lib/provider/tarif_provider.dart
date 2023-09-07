@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_final_fields, non_constant_identifier_names, unused_local_variable, avoid_print
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
-import '../bottom_sheets/loading_bottom_sheet.dart';
+import 'package:hive/hive.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+
 import '../const/enums.dart';
 import '../models/address_model.dart';
 import 'network_class.dart';
@@ -13,10 +16,27 @@ class TarifProvider with ChangeNotifier {
   ApiStatus status = ApiStatus.nothing;
   int bottomIndex = -1;
   int lastIndex = -1;
+  dynamic event;
+
+  int? hourlyId;
+  TariffState tariffState = TariffState.none;
   changeBottomSheet(int x) {
     lastIndex = bottomIndex;
     bottomIndex = x;
     notifyListeners();
+  }
+
+  startListeningSocket() {
+    final user = Hive.box('LoginBox').get('user');
+    final token = user.token;
+
+    final WebSocketChannel channel = IOWebSocketChannel.connect(
+        'ws://216.250.9.245:81/ws/location/?token=$token',
+        pingInterval: const Duration(seconds: 3));
+    channel.stream.listen((event) {
+      this.event = event;
+      notifyListeners();
+    });
   }
 
   nextBottomSheet() {
@@ -74,26 +94,32 @@ class TarifProvider with ChangeNotifier {
     }
   }
 
-    startHourlyTarif({required AddressModel startingPoint}) async {
+  startHourlyTarif({required AddressModel startingPoint}) async {
     status = ApiStatus.loading;
     var data = {'starting_point': startingPoint};
     try {
-      var response = await NetworkHandler.http.post("/tariffs/hourly/", data: jsonEncode(data));
+      var response = await NetworkHandler.http
+          .post("/tariffs/hourly/", data: jsonEncode(data));
       //print(response.statusCode);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        status = ApiStatus.success;
+      hourlyId = response.data['id'];
+      status = ApiStatus.success;
 
-        if (kDebugMode) {
-          print(response.data);
-          print(response.data['id']);
-        }
-        final id = response.data['id'];
-        
-        notifyListeners();
-        return;
+      if (tariffState == TariffState.none ||
+          tariffState == TariffState.waiting) {
+        Timer.periodic(const Duration(seconds: 5), (timer) async {
+          checkIsTariffAccepted(url: '/tariffs/hourly/$hourlyId/');
+          if (tariffState == TariffState.accepted) {
+            timer.cancel();
+            changeBottomSheet(5);
+          }
+        });
       }
+
+      notifyListeners();
+      return;
     } on DioException catch (e) {
       status = ApiStatus.error;
+      tariffState = TariffState.none;
       if (kDebugMode) {
         print(e.error);
 
@@ -108,63 +134,30 @@ class TarifProvider with ChangeNotifier {
 
   int get IDText => _idIext;
 
-  loadingResHourlyTarif(int IDText,{ AddressModel? startingPoint, } ) async {
-    status = ApiStatus.loading;
-    var data = {'starting_point': startingPoint};
-    try {
-      var response = await NetworkHandler.http.post("/tariffs/hourly/", data: jsonEncode(data));
-      //print(response.statusCode);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        status = ApiStatus.success;
+  checkIsTariffAccepted({url}) async {
+    final response = await NetworkHandler.http.get(url);
 
-        if (kDebugMode) {
-          print(response.data);
-          print(response.data['id']);
-        }
-             response.data['id'] = IDText;
-
-        notifyListeners();
-        return;
-      }
-    } on DioException catch (e) {
-      status = ApiStatus.error;
-      if (kDebugMode) {
-        print(e.error);
-
-        if (e.response != null) print("Error= ${e.response!.realUri}");
-        if (e.response != null) print(e.response!.data);
-      }
-      notifyListeners();
+    if (response.statusCode == 200 && response.data['driver'] != null) {
+      tariffState = TariffState.accepted;
+    } else {
+      tariffState = TariffState.waiting;
     }
   }
 
-   Future<void> fetchData() async {
-    int oo = 
-    //TarifProvider().loadingResHourlyTarif().IDText;
-        loadingResHourlyTarif(IDText);
-       
-    try {
-      Dio dio = Dio();
-      Response response = await dio.get(
-          "http://216.250.9.245:81/api/tariffs/hourly/$oo/");
-       print(response);
-      if (response.statusCode == 200) {
-        print(response.data);
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-
-  void startAdaty({required AddressModel startingPoint, required List<AddressModel> destinations, bool isAdaty = true}) async {
+  void startAdaty(
+      {required AddressModel startingPoint,
+      required List<AddressModel> destinations,
+      bool isAdaty = true}) async {
     status = ApiStatus.loading;
-    var data = {'starting_point': startingPoint.toJson(), 'destinations': List.from(destinations.map((e) => e.toJson()))};
+    var data = {
+      'starting_point': startingPoint.toJson(),
+      'destinations': List.from(destinations.map((e) => e.toJson()))
+    };
     //print(data);
     try {
-      var response = await NetworkHandler.http.post(isAdaty ? "/tariffs/usual/" : "/tariffs/on_way/", data: jsonEncode(data));
+      var response = await NetworkHandler.http.post(
+          isAdaty ? "/tariffs/usual/" : "/tariffs/on_way/",
+          data: jsonEncode(data));
       //print(response.statusCode);
       if (response.statusCode == 201) {
         status = ApiStatus.success;
@@ -173,11 +166,29 @@ class TarifProvider with ChangeNotifier {
           print(response.data);
         }
 
+        hourlyId = response.data['id'];
+
+        if (tariffState == TariffState.none ||
+            tariffState == TariffState.waiting) {
+          Timer.periodic(const Duration(seconds: 5), (timer) async {
+            checkIsTariffAccepted(
+                url: isAdaty
+                    ? '/tariffs/usual/$hourlyId'
+                    : '/tariffs/on_way/$hourlyId');
+            if (tariffState == TariffState.accepted) {
+              timer.cancel();
+              startListeningSocket();
+              changeBottomSheet(5);
+            }
+          });
+        }
+
         notifyListeners();
         return;
       }
     } on DioException catch (e) {
       status = ApiStatus.error;
+      tariffState = TariffState.none;
       if (kDebugMode) {
         print(e.error);
 
@@ -188,12 +199,15 @@ class TarifProvider with ChangeNotifier {
     }
   }
 
-  void startYolUgruna({required AddressModel startingPoint, required List<AddressModel> destinations}) async {
+  void startYolUgruna(
+      {required AddressModel startingPoint,
+      required List<AddressModel> destinations}) async {
     status = ApiStatus.loading;
     var data = {'starting_point': startingPoint, 'destinations': destinations};
     print(data);
     try {
-      var response = await NetworkHandler.http.post("/tariffs/usual/", data: jsonEncode(data));
+      var response = await NetworkHandler.http
+          .post("/tariffs/usual/", data: jsonEncode(data));
       //print(response.statusCode);
       if (response.statusCode == 201) {
         status = ApiStatus.success;

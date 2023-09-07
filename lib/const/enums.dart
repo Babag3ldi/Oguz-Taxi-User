@@ -4,13 +4,30 @@ enum Internet { econom, standart }
 
 enum ApiStatus { nothing, loading, error, errorDio, success, dogry, noInternet }
 
-enum BadgeType { publications, sergi, shops, products, videos, announcements, biznes }
+enum BadgeType {
+  publications,
+  sergi,
+  shops,
+  products,
+  videos,
+  announcements,
+  biznes
+}
 
 enum Banks { halk, rysgal, senagat, vneshka }
 
 enum InfoType { about, contact, policy, ads, qa }
 
-enum InputType { string, int, double, select, bool, multiSelect, nestedSelect, multinestedSelect }
+enum InputType {
+  string,
+  int,
+  double,
+  select,
+  bool,
+  multiSelect,
+  nestedSelect,
+  multinestedSelect
+}
 
 enum StoreGornush { sergi, store }
 
@@ -18,9 +35,19 @@ enum CategoryType { bildirish, store, sergi }
 
 enum ProductType { store, sergi, bildirish }
 
-enum AdType { web, mall, mallProduct, excebition, excebitionProduct, adAccount, biznes }
+enum AdType {
+  web,
+  mall,
+  mallProduct,
+  excebition,
+  excebitionProduct,
+  adAccount,
+  biznes
+}
 
 enum FiltrType { category, shop, brand, filtr, none }
+
+enum TariffState { none, accepted, waiting }
 
 String badgeName(BadgeType type) {
   switch (type) {

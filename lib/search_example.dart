@@ -5,6 +5,8 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class LocationAppExample extends StatefulWidget {
+  const LocationAppExample({super.key});
+
   @override
   State<StatefulWidget> createState() => _LocationAppExampleState();
 }
@@ -30,7 +32,7 @@ class _LocationAppExampleState extends State<LocationAppExample> {
                 print(p?.toString());
                 return Center(
                   child: Text(
-                    "${p?.toString() ?? ""}",
+                    p?.toString() ?? "",
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -76,6 +78,8 @@ class _LocationAppExampleState extends State<LocationAppExample> {
 }
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
   State<StatefulWidget> createState() => _SearchPageState();
 }
@@ -83,7 +87,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late TextEditingController textEditingController = TextEditingController();
   late PickerMapController controller = PickerMapController(
-    initMapWithUserPosition:  true,  //UserTrackingOption(),
+    initMapWithUserPosition: true, //UserTrackingOption(),
   );
 
   @override
@@ -130,7 +134,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: TextField(
                       controller: textEditingController,
                       onEditingComplete: () async {
-                        FocusScope.of(context).requestFocus(new FocusNode());
+                        FocusScope.of(context).requestFocus(FocusNode());
                       },
                       decoration: InputDecoration(
                         prefixIcon: const Icon(
@@ -150,7 +154,7 @@ class _SearchPageState extends State<SearchPage> {
                             onTap: () {
                               textEditingController.clear();
                               controller.setSearchableText("");
-                              FocusScope.of(context).requestFocus(new FocusNode());
+                              FocusScope.of(context).requestFocus(FocusNode());
                             },
                             child: const Icon(
                               Icons.close,
@@ -177,7 +181,7 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(
               height: 8,
             ),
-            TopSearchWidget()
+            const TopSearchWidget()
           ],
         ),
       ),
@@ -200,6 +204,8 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class TopSearchWidget extends StatefulWidget {
+  const TopSearchWidget({super.key});
+
   @override
   State<StatefulWidget> createState() => _TopSearchWidgetState();
 }
@@ -226,10 +232,12 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
     final v = controller.searchableText.value;
     if (v.length > 3 && oldText != v) {
       oldText = v;
-      if (_timerToStartSuggestionReq != null && _timerToStartSuggestionReq!.isActive) {
+      if (_timerToStartSuggestionReq != null &&
+          _timerToStartSuggestionReq!.isActive) {
         _timerToStartSuggestionReq!.cancel();
       }
-      _timerToStartSuggestionReq = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      _timerToStartSuggestionReq =
+          Timer.periodic(const Duration(seconds: 3), (timer) async {
         await suggestionProcessing(v);
         timer.cancel();
       });
@@ -286,10 +294,10 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
           if (snap.hasData) {
             return ListView.builder(
               itemExtent: 50.0,
+              itemCount: snap.data!.length,
               itemBuilder: (ctx, index) {
-                print(
-                  snap.data![index].address.toString(),
-                );
+                print(snap.data![index].address.toString());
+
                 return PointerInterceptor(
                   child: ListTile(
                     title: Text(
@@ -307,13 +315,12 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
                       notifierAutoCompletion.value = false;
                       await reInitStream();
                       FocusScope.of(context).requestFocus(
-                        new FocusNode(),
+                        FocusNode(),
                       );
                     },
                   ),
                 );
               },
-              itemCount: snap.data!.length,
             );
           }
           if (snap.connectionState == ConnectionState.waiting) {
