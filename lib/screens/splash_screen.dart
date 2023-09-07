@@ -24,7 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
     initAll();
     super.initState();
 
-    Timer(const Duration(seconds: 3), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainMap())));
+    Timer(
+        const Duration(seconds: 3),
+        () => Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const MainMap())));
   }
 
   initAll() async {
@@ -44,7 +47,8 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     } catch (e) {
       if (mounted) {
-        await Provider.of<AppProvider>(context, listen: false).initLocalSettings(false, "");
+        await Provider.of<AppProvider>(context, listen: false)
+            .initLocalSettings(false, "");
       }
     }
   }

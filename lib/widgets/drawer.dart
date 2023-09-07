@@ -44,17 +44,20 @@ class Drawer1 extends StatelessWidget {
                     ),
                     Provider.of<AppProvider>(context).user == null
                         ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(minimumSize: const Size(150, 40)),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(150, 40)),
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const LoginScreen()));
                               Navigator.of(context).pop();
                             },
                             child: const Text("Içeri gir"))
                         :
                         // Image.asset('assets/images/profile.png'),
                         Text(
-                            Provider.of<AppProvider>(context).user!.name,
-                            style: TextStyle(fontSize: 20, color: Colors.white),
+                            "+993 ${Provider.of<AppProvider>(context).user!.name}",
+                            style: const TextStyle(
+                                fontSize: 20, color: Colors.white),
                           ),
                     const SizedBox(
                       height: 15,
@@ -80,7 +83,7 @@ class Drawer1 extends StatelessWidget {
           ListTile(
             leading: Image.asset('assets/icon/walletIcon.png'),
             title: const Text(
-              'Hasap',
+              'Bahalar',
               style: TextStyle(color: Color(0xFF242E42), fontSize: 17),
             ),
             onTap: () {
@@ -92,6 +95,7 @@ class Drawer1 extends StatelessWidget {
               );
             },
           ),
+
           ListTile(
             leading: Image.asset('assets/icon/historyIcon.png'),
             title: const Text(
@@ -110,7 +114,7 @@ class Drawer1 extends StatelessWidget {
           ListTile(
             leading: Image.asset('assets/icon/notificationIcon.png'),
             title: const Text(
-              'Bellik',
+              'Bildirişler',
               style: TextStyle(color: Color(0xFF242E42), fontSize: 17),
             ),
             onTap: () {
@@ -122,14 +126,6 @@ class Drawer1 extends StatelessWidget {
               );
             },
           ),
-          // ListTile(
-          //   leading: Image.asset('assets/icon/invitefriendsIcon.png'),
-          //   title: const Text(
-          //     'Invite Friends',
-          //     style: TextStyle(color: Color(0xFF242E42), fontSize: 17),
-          //   ),
-          //   onTap: () {},
-          // ),
           ListTile(
             leading: Image.asset('assets/icon/settingsIcon.png'),
             title: const Text(
@@ -155,7 +151,8 @@ class Drawer1 extends StatelessWidget {
               style: TextStyle(color: Colors.red, fontSize: 17),
             ),
             onTap: () {
-              Provider.of<TarifProvider>(context, listen: false).changeBottomSheet(-1);
+              Provider.of<TarifProvider>(context, listen: false)
+                  .changeBottomSheet(-1);
               Provider.of<AppProvider>(context, listen: false).logout();
             },
           ),

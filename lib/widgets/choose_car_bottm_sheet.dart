@@ -36,56 +36,47 @@ class ChooseCarBottomSheet extends StatelessWidget {
           InkWell(
             onTap: () {
               showDialog<String>(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        AlertDialog(
-                                      actionsAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      icon: Image.asset(
-                                        'assets/images/check.png',
-                                        height: 100,
-                                      ),
-                                      title: const Text('Howlugyň!'),
-                                      content: SizedBox(
-                                        width: sizeWidth * 70,
-                                        child: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          child: Text(
-                                              'Siziň garaşýan maşynyňyz geldi.',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Color(0xff8A8A8F))),
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'Cancel'),
-                                          child: const Text(
-                                            'Ýok',
-                                            style: TextStyle(
-                                                color: Color(0xffC8C7CC),
-                                                fontSize: 17),
-                                          ),
-                                        ),
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(
-                                            context,
-                                            'OK',
-                                          ),
-                                          child: const Text(
-                                            'Hawa',
-                                            style: TextStyle(
-                                                color: Color(0xff4252FF),
-                                                fontSize: 17),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  actionsAlignment: MainAxisAlignment.spaceAround,
+                  icon: Image.asset(
+                    'assets/images/check2.png',
+                    height: 100,
+                  ),
+                  title: const Text('Howlugyň!'),
+                  content: SizedBox(
+                    width: sizeWidth * 70,
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text('Siziň garaşýan maşynyňyz geldi.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15, color: Color(0xff8A8A8F))),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text(
+                        'Ýok',
+                        style:
+                            TextStyle(color: Color(0xffC8C7CC), fontSize: 17),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(
+                        context,
+                        'OK',
+                      ),
+                      child: const Text(
+                        'Hawa',
+                        style:
+                            TextStyle(color: Color(0xff4252FF), fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+              );
             },
             child: Container(
               // height: 86,
@@ -96,8 +87,7 @@ class ChooseCarBottomSheet extends StatelessWidget {
                       topRight: Radius.circular(16))),
               child: ListTile(
                 leading: SizedBox(
-                    height: 30, 
-                    child: Image.asset('assets/images/taxi.png')),
+                    height: 30, child: Image.asset('assets/images/taxi.png')),
                 title: const Text(
                   'Pylany Pylanyyew ',
                   style: TextStyle(fontSize: 17),
@@ -108,7 +98,8 @@ class ChooseCarBottomSheet extends StatelessWidget {
                   children: const [
                     Text(
                       '25.00TMT',
-                      style: TextStyle(fontSize: 18, color: AppColors.redPrimary),
+                      style:
+                          TextStyle(fontSize: 18, color: AppColors.redPrimary),
                     ),
                     Text(
                       '2 min',

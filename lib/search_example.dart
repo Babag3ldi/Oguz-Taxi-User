@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -83,7 +85,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   late TextEditingController textEditingController = TextEditingController();
   late PickerMapController controller = PickerMapController(
-    initMapWithUserPosition:  true,  //UserTrackingOption(),
+    initMapWithUserPosition: true, //UserTrackingOption(),
   );
 
   @override
@@ -150,7 +152,7 @@ class _SearchPageState extends State<SearchPage> {
                             onTap: () {
                               textEditingController.clear();
                               controller.setSearchableText("");
-                              FocusScope.of(context).requestFocus(new FocusNode());
+                              FocusScope.of(context).requestFocus(FocusNode());
                             },
                             child: const Icon(
                               Icons.close,
@@ -200,6 +202,8 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 class TopSearchWidget extends StatefulWidget {
+  const TopSearchWidget({super.key});
+
   @override
   State<StatefulWidget> createState() => _TopSearchWidgetState();
 }
@@ -226,10 +230,12 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
     final v = controller.searchableText.value;
     if (v.length > 3 && oldText != v) {
       oldText = v;
-      if (_timerToStartSuggestionReq != null && _timerToStartSuggestionReq!.isActive) {
+      if (_timerToStartSuggestionReq != null &&
+          _timerToStartSuggestionReq!.isActive) {
         _timerToStartSuggestionReq!.cancel();
       }
-      _timerToStartSuggestionReq = Timer.periodic(const Duration(seconds: 3), (timer) async {
+      _timerToStartSuggestionReq =
+          Timer.periodic(const Duration(seconds: 3), (timer) async {
         await suggestionProcessing(v);
         timer.cancel();
       });
@@ -307,7 +313,7 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
                       notifierAutoCompletion.value = false;
                       await reInitStream();
                       FocusScope.of(context).requestFocus(
-                        new FocusNode(),
+                        FocusNode(),
                       );
                     },
                   ),

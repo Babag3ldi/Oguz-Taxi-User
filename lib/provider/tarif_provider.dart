@@ -104,59 +104,59 @@ class TarifProvider with ChangeNotifier {
     }
   }
 
-  int _idIext = 0;
+  // int _idIext = 0;
 
-  int get IDText => _idIext;
+  // int get IDText => _idIext;
 
-  loadingResHourlyTarif(int IDText,{ AddressModel? startingPoint, } ) async {
-    status = ApiStatus.loading;
-    var data = {'starting_point': startingPoint};
-    try {
-      var response = await NetworkHandler.http.post("/tariffs/hourly/", data: jsonEncode(data));
-      //print(response.statusCode);
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        status = ApiStatus.success;
+  // loadingResHourlyTarif(int IDText,{ AddressModel? startingPoint, } ) async {
+  //   status = ApiStatus.loading;
+  //   var data = {'starting_point': startingPoint};
+  //   try {
+  //     var response = await NetworkHandler.http.post("/tariffs/hourly/", data: jsonEncode(data));
+  //     //print(response.statusCode);
+  //     if (response.statusCode == 201 || response.statusCode == 200) {
+  //       status = ApiStatus.success;
 
-        if (kDebugMode) {
-          print(response.data);
-          print(response.data['id']);
-        }
-             response.data['id'] = IDText;
+  //       if (kDebugMode) {
+  //         print(response.data);
+  //         print(response.data['id']);
+  //       }
+  //            response.data['id'] = IDText;
 
-        notifyListeners();
-        return;
-      }
-    } on DioException catch (e) {
-      status = ApiStatus.error;
-      if (kDebugMode) {
-        print(e.error);
+  //       notifyListeners();
+  //       return;
+  //     }
+  //   } on DioException catch (e) {
+  //     status = ApiStatus.error;
+  //     if (kDebugMode) {
+  //       print(e.error);
 
-        if (e.response != null) print("Error= ${e.response!.realUri}");
-        if (e.response != null) print(e.response!.data);
-      }
-      notifyListeners();
-    }
-  }
+  //       if (e.response != null) print("Error= ${e.response!.realUri}");
+  //       if (e.response != null) print(e.response!.data);
+  //     }
+  //     notifyListeners();
+  //   }
+  // }
 
-   Future<void> fetchData() async {
-    int oo = 
-    //TarifProvider().loadingResHourlyTarif().IDText;
-        loadingResHourlyTarif(IDText);
+  //  Future<void> fetchData() async {
+  //   int oo = 
+  //   //TarifProvider().loadingResHourlyTarif().IDText;
+  //       loadingResHourlyTarif(IDText);
        
-    try {
-      Dio dio = Dio();
-      Response response = await dio.get(
-          "http://216.250.9.245:81/api/tariffs/hourly/$oo/");
-       print(response);
-      if (response.statusCode == 200) {
-        print(response.data);
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
+  //   try {
+  //     Dio dio = Dio();
+  //     Response response = await dio.get(
+  //         "http://216.250.9.245:81/api/tariffs/hourly/$oo/");
+  //      print(response);
+  //     if (response.statusCode == 200) {
+  //       print(response.data);
+  //     } else {
+  //       print('Request failed with status: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
 
   void startAdaty({required AddressModel startingPoint, required List<AddressModel> destinations, bool isAdaty = true}) async {

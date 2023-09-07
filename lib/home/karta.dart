@@ -18,6 +18,7 @@ import '../provider/app_provider.dart';
 import '../provider/map_controller.dart';
 import '../provider/tarif_provider.dart';
 import '../simple_bottom_sheet/simple_order_complete_sheet.dart';
+import '../widgets/choose_car_bottm_sheet.dart';
 import '../widgets/drawer.dart';
 
 class MainMap extends StatefulWidget {
@@ -222,7 +223,7 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                         )),
                   ),
               ]),
-        bottomSheet: //const SimpleHomeBottomSheet()
+        bottomSheet:
             prov.bottomIndex == -1
                 ? null
                 : SizedBox(
@@ -239,8 +240,9 @@ class _MainMapState extends State<MainMap> with OSMMixinObserver {
                         AdatyMainBottomSheet(),
                         YolUgrunaMainBottomSheet(),
                         SimpleLoadingBottomSheet(),
+                        ChooseCarBottomSheet(),
                         
-                        
+
                         // SimpleOrderCompleteBottomSheet(),
                       ],
                     ),
