@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import '../const/colors.dart';
+import '../models/search_model.dart';
 import '../provider/tarif_provider.dart';
 
 class SimpleLoadingBottomSheet extends StatefulWidget {
@@ -18,15 +19,15 @@ class SimpleLoadingBottomSheet extends StatefulWidget {
 }
 
 class _SimpleLoadingBottomSheetState extends State<SimpleLoadingBottomSheet> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(
-        const Duration(seconds: 50),
-        () => Provider.of<TarifProvider>(context, listen: false)
-            .changeBottomSheet(5));
-    // Provider.of<TarifProvider>(context, listen: false).fetchData();
-  }
+  // @override
+  // void initState() {
+  //   Timer(const Duration(seconds: 30), () {
+  //     print('object');
+  //     Provider.of<TarifProvider>(context, listen: false).changeBottomSheet(5);
+  //   });
+  //   // Provider.of<TarifProvider>(context, listen: false).fetchData();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +65,17 @@ class _SimpleLoadingBottomSheetState extends State<SimpleLoadingBottomSheet> {
           SizedBox(
             height: sizeHeight * 3,
           ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 20),
-            child: SpinKitThreeBounce(
-              color: AppColors.simplePrimary,
-              size: 38,
+          InkWell(
+            onTap: () {
+                Provider.of<TarifProvider>(context, listen: false)
+                    .changeBottomSheet(5);
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: SpinKitThreeBounce(
+                color: AppColors.simplePrimary,
+                size: 38,
+              ),
             ),
           ),
           SizedBox(

@@ -14,9 +14,12 @@ class NetworkHandler {
   static const baseUrl = //"http://192.168.11.69:8000/api/";
       "http://216.250.9.245:81/api/";
 
-  static Future<void> setRequestHeaders({required isLoggedIn, String token = "", String locale = "tk"}) async {
-    (http.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  static Future<void> setRequestHeaders(
+      {required isLoggedIn, String token = "", String locale = "tk"}) async {
+    (http.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
       return client;
     };
     var headers = {

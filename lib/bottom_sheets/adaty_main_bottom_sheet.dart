@@ -189,11 +189,15 @@ class _AdatyMainBottomSheetState extends State<AdatyMainBottomSheet> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                firstLocationResult!.name,
-                                maxLines: 2,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                              SizedBox(
+                                width: sizeWidth * 60,
+                                child: Text(
+                                  firstLocationResult!.name,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                               Image.asset('assets/icon/pen.png')
                             ],

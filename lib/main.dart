@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/splash",
       routes: {
         "/picker-result": (ctx) => LocationAppExample(),
-        "/splash": (ctx) => SplashScreen(),
+        "/splash": (ctx) => const SplashScreen(),
         "/search": (ctx) => SearchPage(),
         "/map": (ctx) => const MainMap(),
         "/login": (ctx) => const LoginScreen(),

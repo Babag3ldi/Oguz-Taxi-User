@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:oguz_taxi_v2_v2/home/karta.dart';
+import 'package:provider/provider.dart';
 
 import '../const/colors.dart';
+import '../provider/tarif_provider.dart';
 
 class OrderCompleteScreen extends StatelessWidget {
   const OrderCompleteScreen({super.key});
@@ -20,7 +23,7 @@ class OrderCompleteScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/images/check1.png'),
+                Image.asset('assets/icon/check.png'),
                 SizedBox(
                   height: sizeHeight * 5,
                 ),
@@ -89,12 +92,14 @@ class OrderCompleteScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const OrderCompleteScreen(),
-                      ),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const MainMap(),
+                    //   ),
+                    // );
+                    Provider.of<TarifProvider>(context, listen: false)
+                    .changeBottomSheet(5);
                   },
                   child: Container(
                     width: sizeWidth * 92,

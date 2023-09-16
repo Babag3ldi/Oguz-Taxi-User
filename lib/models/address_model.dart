@@ -3,12 +3,14 @@ class AddressModel {
   final String address;
   final Coordinate coordinates;
   int order;
+
   AddressModel({
     this.id = 0,
     required this.address,
     required this.coordinates,
     required this.order,
   });
+
   Map<String, dynamic> toJson() => {
         "address": address,
         "coordinate": coordinates.toJson(),
@@ -16,7 +18,6 @@ class AddressModel {
       };
   @override
   String toString() {
-    // TODO: implement toString
     return "$address ${coordinates.toString()}";
   }
 }

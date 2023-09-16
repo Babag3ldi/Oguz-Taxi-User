@@ -7,6 +7,8 @@ import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class LocationAppExample extends StatefulWidget {
+  const LocationAppExample({super.key});
+
   @override
   State<StatefulWidget> createState() => _LocationAppExampleState();
 }
@@ -32,7 +34,7 @@ class _LocationAppExampleState extends State<LocationAppExample> {
                 print(p?.toString());
                 return Center(
                   child: Text(
-                    "${p?.toString() ?? ""}",
+                    p?.toString() ?? "",
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -78,6 +80,8 @@ class _LocationAppExampleState extends State<LocationAppExample> {
 }
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
   State<StatefulWidget> createState() => _SearchPageState();
 }
@@ -132,7 +136,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: TextField(
                       controller: textEditingController,
                       onEditingComplete: () async {
-                        FocusScope.of(context).requestFocus(new FocusNode());
+                        FocusScope.of(context).requestFocus(FocusNode());
                       },
                       decoration: InputDecoration(
                         prefixIcon: const Icon(
@@ -179,7 +183,7 @@ class _SearchPageState extends State<SearchPage> {
             const SizedBox(
               height: 8,
             ),
-            TopSearchWidget()
+            const TopSearchWidget()
           ],
         ),
       ),
@@ -292,10 +296,10 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
           if (snap.hasData) {
             return ListView.builder(
               itemExtent: 50.0,
+              itemCount: snap.data!.length,
               itemBuilder: (ctx, index) {
-                print(
-                  snap.data![index].address.toString(),
-                );
+                print(snap.data![index].address.toString());
+
                 return PointerInterceptor(
                   child: ListTile(
                     title: Text(
@@ -319,7 +323,6 @@ class _TopSearchWidgetState extends State<TopSearchWidget> {
                   ),
                 );
               },
-              itemCount: snap.data!.length,
             );
           }
           if (snap.connectionState == ConnectionState.waiting) {

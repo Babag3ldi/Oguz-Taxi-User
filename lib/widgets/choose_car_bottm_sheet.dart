@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../const/colors.dart';
+import '../provider/tarif_provider.dart';
 
 class ChooseCarBottomSheet extends StatelessWidget {
   const ChooseCarBottomSheet({super.key});
@@ -40,7 +42,7 @@ class ChooseCarBottomSheet extends StatelessWidget {
                 builder: (BuildContext context) => AlertDialog(
                   actionsAlignment: MainAxisAlignment.spaceAround,
                   icon: Image.asset(
-                    'assets/images/check2.png',
+                    'assets/icon/check2.png',
                     height: 100,
                   ),
                   title: const Text('Howlugyň!'),
@@ -64,10 +66,11 @@ class ChooseCarBottomSheet extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () => Navigator.pop(
-                        context,
-                        'OK',
-                      ),
+                      onPressed: () {
+                        Provider.of<TarifProvider>(context, listen: false)
+                    .changeBottomSheet(6);
+                    Navigator.pop(context, 'Cancel');
+                      },
                       child: const Text(
                         'Hawa',
                         style:

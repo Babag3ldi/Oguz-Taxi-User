@@ -105,14 +105,10 @@ class LoginApi with ChangeNotifier {
     Box box;
     if (Hive.isBoxOpen("LoginBox") == false) {
       await Hive.openBox("LoginBox");
-      box = Hive.box('LoginBox');
-    } else {
-      box = Hive.box('LoginBox');
     }
+      box = Hive.box('LoginBox');
+    
 
     box.put('user', user);
-
-    // await box.put('login', seller.email);
-    // await box.put('parol', seller.password);
   }
 }
